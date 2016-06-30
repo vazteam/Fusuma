@@ -59,6 +59,7 @@ public final class FusumaViewController: UIViewController {
     }
 
     public var hasVideo = false
+    public var hasVideoLibrary = true
 
     var mode: Mode = Mode.Camera
     public var modeOrder: FusumaModeOrder = .LibraryFirst
@@ -100,6 +101,7 @@ public final class FusumaViewController: UIViewController {
         
         cameraView.delegate = self
         albumView.delegate  = self
+        albumView.hasVideoLibrary = hasVideoLibrary
         videoView.delegate = self
 
         menuView.backgroundColor = fusumaBackgroundColor

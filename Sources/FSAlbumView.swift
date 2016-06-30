@@ -24,6 +24,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
     @IBOutlet weak var imageCropViewConstraintTop: NSLayoutConstraint!
     
     weak var delegate: FSAlbumViewDelegate? = nil
+    var hasVideoLibrary = false
     
     var images: PHFetchResult!
     var imageManager: PHCachingImageManager?
@@ -85,8 +86,13 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
         options.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
         ]
-        
-        images = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+
+        if hasVideoLibrary{
+            images = PHAsset.fetchAssetsWithOptions(options)
+        }else{
+            images = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+        }
+
         
         if images.count > 0 {
             
@@ -238,6 +244,11 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
         cell.tag = currentTag
         
         let asset = self.images[indexPath.item] as! PHAsset
+        if asset.mediaType == .Video{
+            cell.setIsVideoMark(true)
+        }else{
+            cell.setIsVideoMark(false)
+        }
         self.imageManager?.requestImageForAsset(asset,
             targetSize: cellSize,
             contentMode: .AspectFill,

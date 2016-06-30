@@ -12,6 +12,9 @@ import Photos
 final class FSAlbumViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var playVideoMark: UIImageView!
+    
+    var isVideo:Bool = false
     
     var image: UIImage? {
         
@@ -24,6 +27,17 @@ final class FSAlbumViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selected = false
+    }
+    
+    func setIsVideoMark(isVideo:Bool){
+        
+        self.isVideo = isVideo
+        
+        if self.isVideo{
+            self.playVideoMark.hidden = false
+        }else{
+            self.playVideoMark.hidden = true
+        }
     }
     
     override var selected : Bool {
