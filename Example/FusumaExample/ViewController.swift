@@ -32,6 +32,8 @@ class ViewController: UIViewController, FusumaDelegate {
         
         // Show Fusuma
         let fusuma = FusumaViewController()
+        fusuma.hasVideoLibrary = true
+        fusuma.hasVideo = true
         
 //        fusumaCropImage = false
         

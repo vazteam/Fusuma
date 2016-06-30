@@ -59,7 +59,7 @@ public final class FusumaViewController: UIViewController {
     }
 
     public var hasVideo = false
-    public var hasVideoLibrary = true
+    public var hasVideoLibrary = false
 
     var mode: Mode = Mode.Camera
     public var modeOrder: FusumaModeOrder = .LibraryFirst
@@ -293,7 +293,21 @@ public final class FusumaViewController: UIViewController {
                     result, info in
                     
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.delegate?.fusumaImageSelected(result!)
+                        
+                        if self.albumView.phAsset.mediaType == .Video {
+                            
+                            let videoOption = PHVideoRequestOptions()
+                            options.version = .Original
+                            
+                            PHImageManager.defaultManager().requestAVAssetForVideo(self.albumView.phAsset, options: videoOption, resultHandler: { (let asset:AVAsset?, let mix:AVAudioMix?, let info:[NSObject : AnyObject]?) in
+                                let urlAsset = asset as! AVURLAsset
+                                
+                                self.delegate?.fusumaVideoCompleted(withFileURL: urlAsset.URL)
+                            })
+
+                        }else if self.albumView.phAsset.mediaType == .Image{
+                            self.delegate?.fusumaImageSelected(result!)
+                        }
                         
                         self.dismissViewControllerAnimated(true, completion: {
                             self.delegate?.fusumaDismissedWithImage?(result!)
