@@ -83,6 +83,10 @@ public final class FusumaViewController: UIViewController {
     lazy var albumView  = FSAlbumView.instance()
     lazy var cameraView = FSCameraView.instance()
     lazy var videoView = FSVideoCameraView.instance()
+
+    private var hasGalleryPermission: Bool {
+        return PHPhotoLibrary.authorizationStatus() == .Authorized
+    }
     
     public weak var delegate: FusumaDelegate? = nil
     
@@ -262,7 +266,6 @@ public final class FusumaViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed(sender: UIButton) {
-        
         let view = albumView.imageCropView
 
         if fusumaCropImage {
@@ -405,6 +408,7 @@ private extension FusumaViewController {
             self.view.bringSubviewToFront(videoShotContainer)
             videoView.startCamera()
         }
+        doneButton.hidden = !hasGalleryPermission
         self.view.bringSubviewToFront(menuView)
     }
     
